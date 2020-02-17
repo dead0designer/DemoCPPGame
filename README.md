@@ -1,5 +1,8 @@
 # DemoCPPGame
 ## Игровой проект-прототип.
+* **https://drive.google.com/drive/folders/1CCrruDhSKaIfxCE8MB7S0Lf64xuwjveQ?usp=sharing** - ссылка на скачивание всего проекта.
+* **https://www.youtube.com/watch?v=NR8mOqcHu3E** - ссылка на прохождение уровня.
+* **https://github.com/dead0designer/DemoCPPGame** - в файлах репозитория содержится папка Source с исходным С++ кодом. 
 ### Описание
 * Проект написан с помощью C++ и Blueprint в движке Unreal Engine 4.24.1
 * Были реализованы простые основные механики Unreal Engine 4: бег, поворот, прыжок, движение акторов, триггеры.
