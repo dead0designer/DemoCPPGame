@@ -79,55 +79,55 @@ void AFlyingCloud::Tick(float DeltaTime)
 
  * RotatingActor 
  
- #include "RotatingActor.h"
-#include "Components/StaticMeshComponent.h"
+       #include "RotatingActor.h"
+       #include "Components/StaticMeshComponent.h"
 
-// Sets default values
-ARotatingActor::ARotatingActor()
-{
+        // Sets default values
+        ARotatingActor::ARotatingActor()
+        {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	RotatingActor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RotatingActor"));
 	RotatingActor->SetupAttachment(RootComponent);
-}
+        }
 
-// Called when the game starts or when spawned
-void ARotatingActor::BeginPlay()
-{
+        // Called when the game starts or when spawned
+        void ARotatingActor::BeginPlay()
+        {
 	Super::BeginPlay();
 	
-}
+        } 
 
-// Called every frame
-void ARotatingActor::Tick(float DeltaTime)
-{
+        // Called every frame
+        void ARotatingActor::Tick(float DeltaTime)
+        {
 	Super::Tick(DeltaTime);
 	FRotator NewRotation = GetActorRotation();
 	float Rotation = DeltaTime * 20.0f;
 	NewRotation.Yaw += Rotation;
 	SetActorRotation(NewRotation);
-}
+        }
 
 ---
 
  * MyBaseCharacter
  
- #include "MyBaseCharacter.h"
-#include "Components/InputComponent.h"
-#include "GameFramework/Pawn.h"
-#include "GameFramework/Controller.h"
-#include "Engine/Engine.h"
+        #include "MyBaseCharacter.h"
+        #include "Components/InputComponent.h"
+        #include "GameFramework/Pawn.h"
+        #include "GameFramework/Controller.h"
+        #include "Engine/Engine.h"
 
-// Sets default values
-AMyBaseCharacter::AMyBaseCharacter()
-{
+        // Sets default values
+        AMyBaseCharacter::AMyBaseCharacter()
+        {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-}
+        }
 
-// Called when the game starts or when spawned
-void AMyBaseCharacter::BeginPlay()
-{
+        // Called when the game starts or when spawned
+        void AMyBaseCharacter::BeginPlay()
+        {
 	Super::BeginPlay();
 
 	if (GEngine)
@@ -135,25 +135,24 @@ void AMyBaseCharacter::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Yellow, TEXT("using MyBaseCharacter"));
 	}
 
-}
+        }
 
-// Called every frame
-void AMyBaseCharacter::Tick(float DeltaTime)
-{
+        // Called every frame
+        void AMyBaseCharacter::Tick(float DeltaTime)
+        {
 	Super::Tick(DeltaTime);
 	const FVector ActorLocation = GetActorLocation();
 	if ((ActorLocation.Z == KillZ) || (ActorLocation.Z < KillZ))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Critical Z-value! Move to start!"));
-		SetActorLocation(FVector(0.0f, 0.0f, 112.0f));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Critical Z-value! Move to start!"));
+	SetActorLocation(FVector(0.0f, 0.0f, 112.0f));
 	}
-}
+        }
 
-// Called to bind functionality to input
-void AMyBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
+        // Called to bind functionality to input
+        void AMyBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+        {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMyBaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AMyBaseCharacter::StopJumping);
 
@@ -162,7 +161,7 @@ void AMyBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	PlayerInputComponent->BindAxis("Turn", this, &AMyBaseCharacter::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &AMyBaseCharacter::AddControllerPitchInput);
-}
+        }
 
 void AMyBaseCharacter::MoveForward(float Value)
 {
@@ -193,33 +192,33 @@ void AMyBaseCharacter::MoveRight(float Value)
  
  * MyTriggerBox
  
- #include "MyTriggerBox.h"
-#include "Engine/Engine.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/Actor.h"
-#include "Kismet/KismetSystemLibrary.h"
+        #include "MyTriggerBox.h"
+        #include "Engine/Engine.h"
+        #include "GameFramework/Character.h"
+        #include "GameFramework/Actor.h"
+        #include "Kismet/KismetSystemLibrary.h"
 
-AMyTriggerBox::AMyTriggerBox()
-{
+        AMyTriggerBox::AMyTriggerBox()
+        {
 	OnActorBeginOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapBegin);
 	OnActorEndOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapEnd);
-}
+        }
 
-void AMyTriggerBox::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
-{
+        void AMyTriggerBox::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
+        {
 	if (const auto Char = Cast<ACharacter>(OtherActor))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("It's finish! You win!"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("It's finish! You win!"));
 	}
-}
+        }
 
-void AMyTriggerBox::OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor)
-{
-	if (const auto Char = Cast<ACharacter>(OtherActor))
+        void AMyTriggerBox::OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor)
+        {
+	    if (const auto Char = Cast<ACharacter>(OtherActor))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Press ESC to close the game!"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Press ESC to close the game!"));
 	}
-}
+        }
 
  
  ---
