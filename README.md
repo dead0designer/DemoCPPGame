@@ -214,8 +214,8 @@
 	    if (const auto Char = Cast<ACharacter>(OtherActor))
 		{
         	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Press ESC to close the game!"));
-	}
-        }
+		}
+        	}
 
  
  ---
