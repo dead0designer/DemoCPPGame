@@ -15,8 +15,8 @@
   
  ---
  
-void AMyBaseCharacter::MoveForward(float Value)
-{
+	void AMyBaseCharacter::MoveForward(float Value)
+	{
 	if ((Controller) && (Value != 0.0f))
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -25,17 +25,17 @@ void AMyBaseCharacter::MoveForward(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
-}
+	}
 
-void AMyBaseCharacter::MoveRight(float Value)
-{
+	void AMyBaseCharacter::MoveRight(float Value)
+	{
 	if ((Controller) && (Value != 0.0f))
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		AddMovementInput(Direction, Value);
+		AddMovementInput(Direction, Value); >
   
 ---
 
@@ -44,36 +44,36 @@ void AMyBaseCharacter::MoveRight(float Value)
 2. *Сущности*
   * FlyingCloud
 ---
-#include "FlyingCloud.h"
-#include "Components/StaticMeshComponent.h"
 
-// Sets default values
-AFlyingCloud::AFlyingCloud()
-{
+	#include "FlyingCloud.h"
+	#include "Components/StaticMeshComponent.h"
+	
+	// Sets default values
+	AFlyingCloud::AFlyingCloud()
+	{
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	StaticMesh->SetupAttachment(RootComponent);
 	StaticMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-}
+	}
 
-// Called when the game starts or when spawned
-void AFlyingCloud::BeginPlay()
-{
+	// Called when the game starts or when spawned
+	void AFlyingCloud::BeginPlay()
+	{
 	Super::BeginPlay();
-	
-}
+	}
 
-// Called every frame
-void AFlyingCloud::Tick(float DeltaTime)
-{
+	// Called every frame
+	void AFlyingCloud::Tick(float DeltaTime)
+	{
 	Super::Tick(DeltaTime);
 	FVector NewLocation = GetActorLocation();
 	float RunningTime = GetGameTimeSinceCreation();
 	float DeltaHeight = (FMath::Sin(RunningTime + DeltaTime) - FMath::Sin(RunningTime));
 	NewLocation.Z += DeltaHeight * 160.0f;
 	SetActorLocation(NewLocation);
-}
+	}
 
 ---
 
@@ -85,27 +85,26 @@ void AFlyingCloud::Tick(float DeltaTime)
         // Sets default values
         ARotatingActor::ARotatingActor()
         {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-	RotatingActor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RotatingActor"));
-	RotatingActor->SetupAttachment(RootComponent);
+ 		// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+		PrimaryActorTick.bCanEverTick = true;
+		RotatingActor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RotatingActor"));
+		RotatingActor->SetupAttachment(RootComponent);
         }
 
         // Called when the game starts or when spawned
         void ARotatingActor::BeginPlay()
         {
-	Super::BeginPlay();
-	
+		Super::BeginPlay();
         } 
 
         // Called every frame
         void ARotatingActor::Tick(float DeltaTime)
         {
-	Super::Tick(DeltaTime);
-	FRotator NewRotation = GetActorRotation();
-	float Rotation = DeltaTime * 20.0f;
-	NewRotation.Yaw += Rotation;
-	SetActorRotation(NewRotation);
+		Super::Tick(DeltaTime);
+		FRotator NewRotation = GetActorRotation();
+		float Rotation = DeltaTime * 20.0f;
+		NewRotation.Yaw += Rotation;
+		SetActorRotation(NewRotation);
         }
 
 ---
@@ -121,71 +120,69 @@ void AFlyingCloud::Tick(float DeltaTime)
         // Sets default values
         AMyBaseCharacter::AMyBaseCharacter()
         {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+ 		// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+		PrimaryActorTick.bCanEverTick = true;
         }
 
         // Called when the game starts or when spawned
         void AMyBaseCharacter::BeginPlay()
         {
-	Super::BeginPlay();
-
-	if (GEngine)
-	{
+		Super::BeginPlay();
+		if (GEngine)
+		{
 		GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Yellow, TEXT("using MyBaseCharacter"));
-	}
-
+		}
         }
 
         // Called every frame
         void AMyBaseCharacter::Tick(float DeltaTime)
         {
-	Super::Tick(DeltaTime);
-	const FVector ActorLocation = GetActorLocation();
-	if ((ActorLocation.Z == KillZ) || (ActorLocation.Z < KillZ))
-	{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Critical Z-value! Move to start!"));
-	SetActorLocation(FVector(0.0f, 0.0f, 112.0f));
-	}
+		Super::Tick(DeltaTime);
+		const FVector ActorLocation = GetActorLocation();
+		if ((ActorLocation.Z == KillZ) || (ActorLocation.Z < KillZ))
+		{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Critical Z-value! Move to start!"));
+		SetActorLocation(FVector(0.0f, 0.0f, 112.0f));
+		}
         }
 
         // Called to bind functionality to input
         void AMyBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
         {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMyBaseCharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AMyBaseCharacter::StopJumping);
+		Super::SetupPlayerInputComponent(PlayerInputComponent);
+		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMyBaseCharacter::Jump);
+		PlayerInputComponent->BindAction("Jump", IE_Released, this, &AMyBaseCharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &AMyBaseCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AMyBaseCharacter::MoveRight);
+		PlayerInputComponent->BindAxis("MoveForward", this, &AMyBaseCharacter::MoveForward);
+		PlayerInputComponent->BindAxis("MoveRight", this, &AMyBaseCharacter::MoveRight);
 
-	PlayerInputComponent->BindAxis("Turn", this, &AMyBaseCharacter::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &AMyBaseCharacter::AddControllerPitchInput);
+		PlayerInputComponent->BindAxis("Turn", this, &AMyBaseCharacter::AddControllerYawInput);
+		PlayerInputComponent->BindAxis("LookUp", this, &AMyBaseCharacter::AddControllerPitchInput);
         }
 
-void AMyBaseCharacter::MoveForward(float Value)
-{
-	if ((Controller) && (Value != 0.0f))
-	{
+		void AMyBaseCharacter::MoveForward(float Value)
+		{
+			if ((Controller) && (Value != 0.0f))
+		{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
-	}
-}
+		}
+		}
 
-void AMyBaseCharacter::MoveRight(float Value)
-{
-	if ((Controller) && (Value != 0.0f))
-	{
+		void AMyBaseCharacter::MoveRight(float Value)
+		{
+		if ((Controller) && (Value != 0.0f))
+		{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
-	}
-}
+		}
+		}
 
  
  3. *Прочее*
@@ -200,23 +197,23 @@ void AMyBaseCharacter::MoveRight(float Value)
 
         AMyTriggerBox::AMyTriggerBox()
         {
-	OnActorBeginOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapBegin);
-	OnActorEndOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapEnd);
+		OnActorBeginOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapBegin);
+		OnActorEndOverlap.AddDynamic(this, &AMyTriggerBox::OnOverlapEnd);
         }
 
         void AMyTriggerBox::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
         {
-	if (const auto Char = Cast<ACharacter>(OtherActor))
-	{
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("It's finish! You win!"));
-	}
+		if (const auto Char = Cast<ACharacter>(OtherActor))
+		{
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("It's finish! You win!"));
+		}
         }
 
         void AMyTriggerBox::OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor)
         {
 	    if (const auto Char = Cast<ACharacter>(OtherActor))
-	{
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Press ESC to close the game!"));
+		{
+        	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("Press ESC to close the game!"));
 	}
         }
 
@@ -238,3 +235,5 @@ void AMyBaseCharacter::MoveRight(float Value)
 * UPD2: 
 Собственно зачем оно было сделано?
 Это была первая проба плюсов в контексте UE4. Прочитал книжку по с++ - построил уровень. Закрепил. 
+* UPD3:
+Постарался сделать код настолько читаемым насколько это возможно.
